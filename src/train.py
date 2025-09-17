@@ -22,8 +22,10 @@ def main():
     iris = load_iris()
     X, y = iris.data, iris.target
 
-    # train-test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # split dataset
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
     # scale features
     scaler = StandardScaler()
@@ -37,22 +39,23 @@ def main():
         "svm": SVC(kernel="rbf", C=1.0)
     }
 
+    # make sure /models folder exists
     os.makedirs("models", exist_ok=True)
 
-    # train, evaluate, save
     for name, model in models.items():
         print(f"\nTraining {name}...")
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
 
+        # evaluation
         metrics = evaluate(y_test, y_pred)
         print(f"{name} metrics:", metrics)
         print(classification_report(y_test, y_pred))
 
-        # save trained model
-        file_path = os.path.join("models", f"{name}.pkl")
-        joblib.dump(model, file_path)
-        print(f"Saved {name} at {file_path}")
+        # save model in /models
+        model_path = os.path.join("models", f"{name}.pkl")
+        joblib.dump(model, model_path)
+        print(f"✅ Saved {name} model at {model_path}")
 
 if __name__ == "__main__":
     main()
