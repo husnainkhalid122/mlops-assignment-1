@@ -53,9 +53,11 @@ def main():
         print(classification_report(y_test, y_pred))
 
         # save model in /models
+        # save trained model
         model_path = os.path.join("models", f"{name}.pkl")
         joblib.dump(model, model_path)
-        print(f"✅ Saved {name} model at {model_path}")
+        print(f"Saved {name} model at {model_path}")
+
 
 if __name__ == "__main__":
     main()
